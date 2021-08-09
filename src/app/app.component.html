@@ -1,0 +1,51 @@
+<div class="header">
+  <span class="header-text">Benvenuto nella Gallery Shop di Cataldo</span>
+</div>
+<div class="search-content">
+  <span class="search-text">Search</span>
+  <input type="text" id="search" name="searchName" [(ngModel)]="placeholder" (change)="onChangePlaceholder()"/>
+  <div class="search-options">
+    <span class="tooltipSearch">Click for search list of images</span>
+    <img src="assets\images\search.png" (click)="callPhotoGalleryService()"/>
+  </div>
+</div>
+
+
+<div class="page-container">
+  <div class="table-content">
+    <div class="table-items">
+      <div class="page-number">{{index + 1}} - {{lengthListImage}}</div>
+      <img class="selected-image" [src]="getImage()" *ngIf="imageSelected === ''; else showSelected;"/>
+      <ng-template #showSelected>
+        <img class="selected-image" [src]="imageSelected" />
+      </ng-template>
+      <a class="previous" (click)="manageIndex('prev')">&#10094;</a>
+      <a class="next" (click)="manageIndex('next')">&#10095;</a>
+      <div class="text-container">
+        <span class="text-label">{{getName(index)}}</span>
+      </div>
+      <div class="row">
+        <div class="column" *ngFor="let image of getListImage(); let index = index; trackBy: getIndex;">
+          <img class="select-image cursor" [src]="image" (click)="openPreviewImage(image, null)">
+          <span class="tooltiptext">Click to view image</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-container">
+    <div id="scroll" class="scroll-content"
+      *ngFor="let image of imagesScroll; let index = index; trackBy: getIndex;">
+      <img class="scroll-image" [src]="image" (click)="openPreviewImage(image, 'scroll')"/>
+    </div>
+  </div>
+
+  <div class="continue-scroll">
+   <span>Infinity Scroll</span> 
+    <img src="\assets\images\curve-down-arrow.png">
+  </div>
+</div>
+
+<div id="image-modal" class="modal" *ngIf="modalImage != ''">
+  <span class="close" (click)="onCloseModal()">&times;</span>
+  <img class="modal-items" [src]="modalImage">
+</div>
