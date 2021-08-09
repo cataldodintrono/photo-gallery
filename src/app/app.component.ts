@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, OnInit, EventEmitter } from '@angular/core';
 import { PhotoGalleryService } from './service/photo-gallery.service';
-import { first } from 'rxjs/operators'
+import { delay, first } from 'rxjs/operators'
 import { throwError } from 'rxjs';
 
 @Component({
@@ -24,35 +24,37 @@ export class AppComponent implements OnInit {
   }
   @HostListener('window:scroll', ['$event'])
   onScroll(event) {
+
     let scroll = window.pageYOffset;
     scroll = Math.trunc(scroll + this.innerHeight);
     let numberRandom = 0;
     let element;
     document.getElementById("footer").style.display = "none";
-
-    if (scroll === document.documentElement.scrollHeight) {
-      numberRandom = Math.floor(Math.random() * (this.listImages.length - 1)) + 1;
-      this.photoGalleryService.getImage(this.placeholder).pipe(first()).subscribe((response) => {
-
-        element = response.data.children[numberRandom];
-
-        if (element.data.thumbnail.includes("https")) {
-          this.imagesScroll.push(element.data.thumbnail);
-        } else {
-          this.imagesScroll.push(this.imagesScroll[this.imagesScroll.length - 1]);
-        }
-        window.scroll({
-          top: (document.documentElement.scrollHeight), //900
-          left: 0,
-          behavior: 'smooth'
-        });
-        document.getElementById("footer").style.display = "block";
-        
-
-      });
-
-
+    if (scroll != document.documentElement.scrollHeight) {
+      if (document.documentElement.scrollHeight - scroll === 1) {
+        scroll = scroll + 1;
+      }
     }
+    setTimeout(() => {
+      delay(500);
+      if (scroll === document.documentElement.scrollHeight) {
+        numberRandom = Math.floor(Math.random() * (this.listImages.length - 1)) + 1;
+        this.photoGalleryService.getImage(this.placeholder).pipe(first()).subscribe((response) => {
+          element = response.data.children[numberRandom];
+          if (element.data.thumbnail.includes("https")) {
+            this.imagesScroll.push(element.data.thumbnail);
+          } else {
+            this.imagesScroll.push(this.imagesScroll[this.imagesScroll.length - 1]);
+          }
+          document.getElementById("footer").style.display = "block";
+          /* window.scroll({
+            top: (document.documentElement.scrollHeight),
+            left: 0,
+            behavior: 'smooth'
+          }); */
+        });
+      }
+    }, 1500);
   }
 
   title = 'project-test';
