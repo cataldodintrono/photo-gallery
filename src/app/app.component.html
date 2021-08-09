@@ -14,12 +14,18 @@
   <div class="table-content">
     <div class="table-items">
       <div class="page-number">{{index + 1}} - {{lengthListImage}}</div>
-      <img class="selected-image" [src]="getImage()" *ngIf="imageSelected === ''; else showSelected;"/>
+      <div class="container-image">
+        <img class="selected-image" [src]="getImage()" *ngIf="imageSelected === ''; else showSelected;"/>
+        <a class="previous" (click)="manageIndex('prev')">&#10094;</a>
+        <a class="next" (click)="manageIndex('next')">&#10095;</a>
+      </div>
       <ng-template #showSelected>
+      <div class="container-image">
         <img class="selected-image" [src]="imageSelected" />
+        <a class="previous" (click)="manageIndex('prev')">&#10094;</a>
+        <a class="next" (click)="manageIndex('next')">&#10095;</a>
+      </div>
       </ng-template>
-      <a class="previous" (click)="manageIndex('prev')">&#10094;</a>
-      <a class="next" (click)="manageIndex('next')">&#10095;</a>
       <div class="text-container">
         <span class="text-label">{{getName(index)}}</span>
       </div>

@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
       }
     }
     setTimeout(() => {
-      delay(500);
       if (scroll === document.documentElement.scrollHeight) {
         numberRandom = Math.floor(Math.random() * (this.listImages.length - 1)) + 1;
         this.photoGalleryService.getImage(this.placeholder).pipe(first()).subscribe((response) => {
@@ -54,7 +53,7 @@ export class AppComponent implements OnInit {
           }); */
         });
       }
-    }, 1500);
+    }, 1000);
   }
 
   title = 'project-test';
