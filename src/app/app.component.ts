@@ -28,14 +28,12 @@ export class AppComponent implements OnInit {
     scroll = Math.trunc(scroll + this.innerHeight);
     let numberRandom = 0;
     let element;
+    document.getElementById("footer").style.display = "none";
+
     if (scroll === document.documentElement.scrollHeight) {
       numberRandom = Math.floor(Math.random() * (this.listImages.length - 1)) + 1;
       this.photoGalleryService.getImage(this.placeholder).pipe(first()).subscribe((response) => {
-        window.scroll({
-          top: (document.documentElement.scrollHeight - 950),
-          left: 0,
-          behavior: 'smooth'
-        });
+
         element = response.data.children[numberRandom];
 
         if (element.data.thumbnail.includes("https")) {
@@ -43,7 +41,17 @@ export class AppComponent implements OnInit {
         } else {
           this.imagesScroll.push(this.imagesScroll[this.imagesScroll.length - 1]);
         }
+        window.scroll({
+          top: (document.documentElement.scrollHeight), //900
+          left: 0,
+          behavior: 'smooth'
+        });
+        document.getElementById("footer").style.display = "block";
+        
+
       });
+
+
     }
   }
 
